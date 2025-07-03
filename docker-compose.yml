@@ -1,0 +1,21 @@
+
+services:
+  django:
+    container_name: django 
+    build:
+      context: . 
+    command : python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/venv 
+    ports:
+      - "8000:8000"
+
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-vn3sltoy_o(14_1q%@enj^=j1mp-p1gui!g!v*7r@^=0jd8opl
+      - ALLOWED_HOSTS=127.0.0.1,localhost
+      # - DB_NAME=postgres
+      # - DB_USER=postgres
+      # - DB_PASSWORD=postgres
+      
