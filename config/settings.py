@@ -8,8 +8,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Environment variables
 SECRET_KEY = os.environ.get('SECRET_KEY') 
 DEBUG = os.environ.get('DEBUG')
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
-
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(', ')
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CLELERY_BACKEND", "redis://redis:6379/0")
 
 
 INSTALLED_APPS = [
@@ -19,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'worker',
 ]
 
 MIDDLEWARE = [

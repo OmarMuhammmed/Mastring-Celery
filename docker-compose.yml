@@ -1,5 +1,12 @@
 
 services:
+
+  redis :
+    container_name: redis_broker
+    image: redis:7.0.11-alpine
+    ports:
+      - "6379:6379"
+
   django:
     container_name: django 
     build:
@@ -14,8 +21,26 @@ services:
     environment:
       - DEBUG=1
       - SECRET_KEY=django-insecure-vn3sltoy_o(14_1q%@enj^=j1mp-p1gui!g!v*7r@^=0jd8opl
-      - ALLOWED_HOSTS=127.0.0.1,localhost
+      - ALLOWED_HOSTS=127.0.0.1, localhost
       # - DB_NAME=postgres
       # - DB_USER=postgres
       # - DB_PASSWORD=postgres
-      
+    depends_on :
+      - redis 
+
+  celery :
+    container_name : celery
+    build:
+      context: .
+    command: celery -A config worker --loglevel=info  
+    depends_on :
+      - redis   
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/venv
+
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=django-insecure-vn3sltoy_o(14_1q%@enj^=j1mp-p1gui!g!v*7r@^=0jd8opl
+      - ALLOWED_HOSTS=127.0.0.1, localhost  
+        
